@@ -41,7 +41,7 @@ class User {
   // Méthode pour retourner une chaîne descriptive
   @override
   String toString() {
-    return 'User(id : $id ,name: $name, age: $age, height: $height, Password: ${userPassword.isValid()})';
+    return 'User(id : $id , name: $name, age: $age, height: $height, Password: ${userPassword.isValid()})';
   }
 }
 
