@@ -1,5 +1,5 @@
 class User {
-  int id; // L'id est un entier
+  int id;
   String name;
   int age;
   double height;
@@ -30,7 +30,7 @@ class User {
   // Méthode pour retourner une chaîne descriptive
   @override
   String toString() {
-    return 'User(id: $id, name: $name, age: $age, height: $height)';
+    return 'User(id : $id ,name: $name,  age: $age, height: $height)';
   }
 }
 
@@ -44,6 +44,6 @@ void main() {
   final youssef = User.fromJson(map);
 
   // Impression des utilisateurs
-  print(djo.toString());    // User(id: 1, name: Djo, age: 25, height: 1.89)
-  print(youssef.toString()); // User(id: 3, name: Youssef, age: 26, height: 1.9)
+  print(djo.toString());    // User(id : 1 ,name: Djo,  age: 25, height: 1.89)
+  print(youssef.toString()); // User(id : 3 ,name: Youssef,  age: 26, height: 1.9)
 }
