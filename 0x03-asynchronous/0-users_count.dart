@@ -1,14 +1,11 @@
-// Prints number result of fetchUsersCount that returns 19 after 2 seconds
-// Wild that this is not a circular import
-import '0-main.dart';
+import '0-util.dart';
 
-Future<void> usersCount() {
-  // Future<void> doesn't return anything but doesn't allow null
-  return fetchUsersCount().then((count) {
-    print(count);
-  });
-}
-
-main() async {
-  await usersCount();
+// Fonction asynchrone qui affiche le nombre d'utilisateurs
+Future<void> usersCount() async {
+  try {
+    int count = await fetchUsersCount(); // Appel à fetchUsersCount
+    print(count); // Affiche le nombre d'utilisateurs
+  } catch (e) {
+    print("Error fetching users count: $e");
+  }
 }
