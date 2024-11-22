@@ -4,5 +4,5 @@ Future<int> fetchUsersCount() => Future.delayed(
     );
 
 usersCount() async {
-    print(await fetchUsersCount());
+  print(await fetchUsersCount());
 }
