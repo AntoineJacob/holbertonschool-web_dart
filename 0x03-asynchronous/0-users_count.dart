@@ -1,15 +1,10 @@
-import 'dart:async';
+// Prints number result of fetchUsersCount that returns 19 after 2 seconds
+// Wild that this is not a circular import
+import '0-main.dart';
 
-Future<int> fetchUsersCount() => Future.delayed(
-      const Duration(seconds: 2),
-      () => 19,
-    );
-
-Future<void> usersCount() async {
-  int count = await fetchUsersCount();
-  print(count);
-}
-
-void main() async {
-  await usersCount();
+Future<void> usersCount() {
+  // Future<void> doesn't return anything but doesn't allow null
+  return fetchUsersCount().then((count) {
+    print(count);
+  });
 }
