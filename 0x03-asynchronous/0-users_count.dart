@@ -8,3 +8,7 @@ Future<void> usersCount() {
     print(count);
   });
 }
+
+main() async {
+  await usersCount();
+}
