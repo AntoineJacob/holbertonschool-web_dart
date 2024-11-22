@@ -6,7 +6,3 @@ Future<int> fetchUsersCount() => Future.delayed(
 usersCount() async {
     print(await fetchUsersCount());
 }
-
-main() async {
-  await usersCount();
-}
