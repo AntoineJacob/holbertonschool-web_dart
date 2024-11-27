@@ -4,31 +4,34 @@ import '4-util.dart'; // Importation des fonctions fetchUserData, fetchUserOrder
 // Fonction calculateTotal() : Calcule le prix total des commandes d'un utilisateur
 Future<double> calculateTotal() async {
   try {
-    // Obtenez les données utilisateur
+    // Étape 1 : Récupérer les données utilisateur
     String userData = await fetchUserData();
     Map<String, dynamic> userMap = jsonDecode(userData);
     String userId = userMap['id'];
 
-    // Obtenez les commandes de l'utilisateur
+    // Étape 2 : Récupérer les commandes de l'utilisateur
     String ordersData = await fetchUserOrders(userId);
     List<dynamic>? orders = jsonDecode(ordersData);
 
-    // Si les commandes sont nulles ou vides, le total est 0
+    // Vérification si aucune commande n'est trouvée
     if (orders == null || orders.isEmpty) {
       return 0.0;
     }
 
-    // Calculez le prix total des produits
+    // Étape 3 : Calculer le prix total
     double total = 0.0;
-    for (String product in orders) {
+    for (var product in orders) {
       String productPriceData = await fetchProductPrice(product);
-      double productPrice = jsonDecode(productPriceData);
-      total += productPrice;
+      dynamic productPrice = jsonDecode(productPriceData);
+
+      // Conversion explicite de la valeur en double
+      total += (productPrice is int ? productPrice.toDouble() : productPrice);
     }
 
     return total;
   } catch (e) {
     // En cas d'erreur, retourner -1
+    print("Erreur attrapée : $e");
     return -1.0;
   }
 }
