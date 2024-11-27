@@ -1,53 +1,34 @@
-import 'dart:async';
-import 'dart:convert';
+import 'dart:convert'; // Pour jsonDecode
+import '4-util.dart'; // Importation des fonctions fetchUserData, fetchUserOrders, et fetchProductPrice
 
-Future<String> fetchUserOrders(String id) async {
-  var orders = {
-    "7ee9a243-01ca-47c9-aa14-0149789764c3": ["pizza", "orange"]
-  };
-  try {
-    return Future.delayed(
-        const Duration(seconds: 2), () => json.encode(orders[id]));
-  } catch (err) {
-    return "error caught : $err";
-  }
-}
-
-Future<String> fetchUserData() => Future.delayed(
-      const Duration(seconds: 2),
-      () =>
-          '{"id" : "7ee9a243-01ca-47c9-aa14-0149789764c3", "username" : "admin"}',
-    );
-
-Future<String> fetchProductPrice(product) async {
-  var products = {"pizza": 20.30, "orange": 10, "water": 5, "soda": 8.5};
-  try {
-    return Future.delayed(
-        const Duration(seconds: 2), () => json.encode(products[product]));
-  } catch (err) {
-    return "error caught : $err";
-  }
-}
-
+// Fonction calculateTotal() : Calcule le prix total des commandes d'un utilisateur
 Future<double> calculateTotal() async {
   try {
+    // Obtenez les données utilisateur
     String userData = await fetchUserData();
-    final Map<String, dynamic> userMap = jsonDecode(userData);
+    Map<String, dynamic> userMap = jsonDecode(userData);
     String userId = userMap['id'];
 
+    // Obtenez les commandes de l'utilisateur
     String ordersData = await fetchUserOrders(userId);
-    List<dynamic> ordersList = jsonDecode(ordersData);
+    List<dynamic>? orders = jsonDecode(ordersData);
 
+    // Si les commandes sont nulles ou vides, le total est 0
+    if (orders == null || orders.isEmpty) {
+      return 0.0;
+    }
+
+    // Calculez le prix total des produits
     double total = 0.0;
-    for (var order in ordersList) {
-      String product = order.toString();
-      String priceData = await fetchProductPrice(product);
-      double productPrice = double.tryParse(priceData) ?? 0.0;
+    for (String product in orders) {
+      String productPriceData = await fetchProductPrice(product);
+      double productPrice = jsonDecode(productPriceData);
       total += productPrice;
     }
 
     return total;
-  } catch (error) {
-    return -1;
+  } catch (e) {
+    // En cas d'erreur, retourner -1
+    return -1.0;
   }
 }
