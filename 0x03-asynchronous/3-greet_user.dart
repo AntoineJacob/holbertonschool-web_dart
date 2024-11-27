@@ -1,36 +1,41 @@
-import 'dart:async';
-import 'dart:convert';
+import 'dart:convert'; // Pour jsonDecode
+import '3-util.dart'; // Importation de fetchUserData() et checkCredentials()
 
-Future<String> fetchUserData() => Future.delayed(
-      const Duration(seconds: 2),
-      () =>
-          '{"id" : "7ee9a243-01ca-47c9-aa14-0149789764c3", "username" : "admin"}',
-    );
-
+// Fonction greetUser() : Retourne un message d'accueil avec le nom d'utilisateur
 Future<String> greetUser() async {
   try {
+    // Appel de la fonction fetchUserData() pour obtenir les données utilisateur
     String userData = await fetchUserData();
-    final Map<String, dynamic> userMap = jsonDecode(userData);
-    String username = userMap['username'];
-    return 'Hello $username';
-  } catch (error) {
-    return 'error caught: $error';
+
+    // Décodage des données JSON en une Map
+    Map<String, dynamic> userMap = jsonDecode(userData);
+
+    // Retourne le message d'accueil avec le nom d'utilisateur
+    return 'Hello ${userMap['username']}';
+  } catch (e) {
+    // En cas d'erreur, retourne le message d'erreur
+    return 'error caught: $e';
   }
 }
 
-Future<bool> checkCredentials() =>
-    Future.delayed(const Duration(seconds: 2), () => true);
-
+// Fonction loginUser() : Gère la connexion et retourne un message approprié
 Future<String> loginUser() async {
   try {
-    bool credentialsValid = await checkCredentials();
-    print('There is a user: $credentialsValid');
-    if (credentialsValid) {
+    // Vérifie les identifiants via checkCredentials()
+    bool isAuthenticated = await checkCredentials();
+
+    // Affiche l'état de l'utilisateur
+    print('There is a user: $isAuthenticated');
+
+    if (isAuthenticated) {
+      // Si les identifiants sont valides, retourne le message de greetUser()
       return await greetUser();
     } else {
+      // Si les identifiants ne sont pas valides, retourne un message d'erreur
       return 'Wrong credentials';
     }
-  } catch (error) {
-    return 'error caught: $error';
+  } catch (e) {
+    // En cas d'erreur, retourne le message d'erreur
+    return 'error caught: $e';
   }
 }
